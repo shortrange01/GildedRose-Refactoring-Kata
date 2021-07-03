@@ -43,16 +43,17 @@
 
 -   TEST
     -   "Aged Brie"
-        -   [ ] 日が経つほど Quality 値が上がる
-        -   [ ] Quality は max 50
+        -   [x] 日が経つほど Quality 値が上がる
+        -   [x] Quality は max 50
     -   "Backstage passes"
-        -   [ ] SellIn が 10 以内の場合 Quality 値が 2 上がる
-        -   [ ] SellIn が 5 以内の場合 Quality 値が 3 上がる
-        -   [ ] SellIn が マイナスの場合 Quality 値は 0 になる
+        -   [x] SellIn が 10 を越える場合 Quality 値が 1 上がる
+        -   [x] SellIn が 10 以内の場合 Quality 値が 2 上がる
+        -   [x] SellIn が 5 以内の場合 Quality 値が 3 上がる
+        -   [x] SellIn が マイナスの場合 Quality 値は 0 になる
     -   "Sulfuras"
-        -   [ ] 常に Quality 値 80
+        -   [x] 常に Quality 値 80
     -   サプライヤー"Conjured"
-        -   [ ] 通常のアイテムの 2 倍の速さで Quality が下がる
+        -   [x] 通常のアイテムの 2 倍の速さで Quality が下がる
 
 ## 仕様不明点
 

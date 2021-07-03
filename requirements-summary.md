@@ -37,9 +37,9 @@
 
 ## TODO List
 
-[ ] 毎日の終わりに、システムは SellIn, Quality の項目の値を 1 小さくする
-[ ] 販売するための残り日数が無くなると、Quality 値は 2 小さくなる
-[ ] "Sulfuras" は updateQuality() で処理せず早期リターン
+[x] 毎日の終わりに、システムは SellIn, Quality の項目の値を 1 小さくする
+[x] 販売するための残り日数が無くなると、Quality 値は 2 小さくなる
+[x] "Sulfuras" は updateQuality() で処理せず早期リターン
 
 -   TEST
     -   "Aged Brie"

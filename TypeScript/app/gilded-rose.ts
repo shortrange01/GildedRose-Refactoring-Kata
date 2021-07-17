@@ -72,7 +72,7 @@ export class GildedRose {
 
     updateOtherItem(item: Item): Item {
             
-        item.quality = item.quality - 1;
+        item.quality = this.decrementQuality(item.quality);
 
         // サブプライヤーの商品はさらにqualityを減算する
         if (item.name === 'Conjured') item.quality = this.decrementQuality(item.quality);

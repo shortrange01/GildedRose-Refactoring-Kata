@@ -1,3 +1,6 @@
+const MAX_QUALITY = 50;
+const MIN_QUALITY = 0;
+
 export class Item {
     name: string;
     sellIn: number;
@@ -19,67 +22,81 @@ export class GildedRose {
 
     updateQuality(): Item[] {
         this.items.forEach((item: Item) => {
-            // Sulfurasは何も変更せずに早期リターン
-            if (item.name === 'Sulfuras, Hand of Ragnaros') return;
-
-            if (item.name === 'Aged Brie') {
-                item = this.updateAgedBrie(item);
-                return;
+            switch(item.name) {
+                case 'Sulfuras, Hand of Ragnaros':
+                    break;
+                case 'Aged Brie':
+                    item = this.updateAgedBrie(item);
+                    break;
+                case 'Backstage passes to a TAFKAL80ETC concert':
+                    item = this.updateBackstagePasses(item);
+                    break;
+                default:
+                    if(item.quality <= MIN_QUALITY) {
+                        item.sellIn = item.sellIn - 1;
+                        break;
+                    }
+                    item = this.updateOtherItem(item);
+                    break;
             }
-
-            if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
-                item = this.updateBackstagePasses(item);
-                return;
-            }
-            
-            if(item.quality <= 0) {
-                item.sellIn = item.sellIn - 1;
-                return;
-            }
-
-            item = this.updateOtherItem(item);
         });
 
         return this.items;
     }
 
     updateAgedBrie(item: Item): Item {
-        item.quality = item.quality < 50 ? item.quality + 1 : item.quality;
+
+        item.quality = item.quality < MAX_QUALITY ? item.quality + 1 : item.quality;
+
+        // 販売期間を1減少させる
         item.sellIn = item.sellIn - 1;
-        if (item.sellIn >= 0) return item;
-        item.quality = item.quality < 50 ? item.quality + 1 : item.quality;
+
         return item;
     }
 
     updateBackstagePasses(item: Item): Item {
-        item.quality = item.quality < 50 ? item.quality + 1 : item.quality;
-        if (item.quality < 50) {
-            if (item.sellIn < 11) item.quality = item.quality + 1;
-            if (item.sellIn < 6 && item.quality < 50) item.quality = item.quality + 1;
-        }
+
+        item.quality = this.incrementQuality(item.quality);
+
+        if (item.sellIn < 11) item.quality = this.incrementQuality(item.quality);
+        if (item.sellIn < 6) item.quality = this.incrementQuality(item.quality);
+
+        // 販売期間を1減少させる
         item.sellIn = item.sellIn - 1;
-        if (item.sellIn >= 0) return item;
-        // Backstage passes は販売期間が過ぎると0になる
-        item.quality = 0;
+
+        // Backstage passes は販売期間が過ぎるとqualityが0になる
+        if (item.sellIn < 0)  item.quality = MIN_QUALITY;
+
         return item;
     }
 
     updateOtherItem(item: Item): Item {
             
         item.quality = item.quality - 1;
-        if (item.name === 'Conjured' && item.quality > 0) item.quality = item.quality - 1;
+
+        // サブプライヤーの商品はさらにqualityを減算する
+        if (item.name === 'Conjured') item.quality = this.decrementQuality(item.quality);
         
         // 販売期間を1減少させる
         item.sellIn = item.sellIn - 1;
 
         // 販売期間中またはqualityが0の場合は処理終了
-        if (item.sellIn >= 0 || item.quality <= 0) return item;
+        if (item.sellIn >= 0 || item.quality <= MIN_QUALITY) return item;
 
         // 販売期限を過ぎた場合は、Quality 値をさらに増減させる
-        item.quality = item.quality - 1;
-        if (item.name === 'Conjured' && item.quality > 0) item.quality = item.quality - 1;
+        item.quality = this.decrementQuality(item.quality);
+
+        // サブプライヤーの商品はさらにqualityを減算する
+        if (item.name === 'Conjured') item.quality = this.decrementQuality(item.quality);
 
         return item;
+    }
 
+    incrementQuality(quality: number): number {
+        return quality < MAX_QUALITY ? quality + 1 : quality;
+    }
+    
+    decrementQuality(quality: number): number {
+        return quality > MIN_QUALITY ? quality - 1 : quality;
     }
 }

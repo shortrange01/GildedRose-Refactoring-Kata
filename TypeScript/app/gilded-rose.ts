@@ -46,7 +46,7 @@ export class GildedRose {
 
     updateAgedBrie(item: Item): Item {
 
-        item.quality = item.quality < MAX_QUALITY ? item.quality + 1 : item.quality;
+        item.quality = this.incrementQuality(item.quality);
 
         // 販売期間を1減少させる
         item.sellIn = item.sellIn - 1;
@@ -95,7 +95,7 @@ export class GildedRose {
     incrementQuality(quality: number): number {
         return quality < MAX_QUALITY ? quality + 1 : quality;
     }
-    
+
     decrementQuality(quality: number): number {
         return quality > MIN_QUALITY ? quality - 1 : quality;
     }
